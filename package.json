@@ -1,0 +1,11 @@
+{
+  "name": "webchat-ai-extension",
+  "version": "1.0.0",
+  "description": "WebChat AI Browser Extension",
+  "scripts": {
+    "create-icons": "node create_icons.js"
+  },
+  "dependencies": {
+    "sharp": "^0.32.1"
+  }
+} 

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebChat AI</title>
+    <meta charset="UTF-8">
+    <script src="libs/jspdf.umd.min.js"></script>
+    <script src="libs/document-generator.js"></script>
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            margin: 0;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: calc(100vh - 20px);
+        }
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background: #007bff;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .ai-message {
+            background: #e9ecef;
+            color: black;
+            align-self: flex-start;
+        }
+        .ai-message h1 {
+            font-size: 1.5em;
+            margin: 0.5em 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.3em;
+        }
+        .ai-message h2 {
+            font-size: 1.3em;
+            margin: 0.4em 0;
+            color: #34495e;
+        }
+        .ai-message h3 {
+            font-size: 1.1em;
+            margin: 0.3em 0;
+            color: #2c3e50;
+        }
+        .ai-message ul, .ai-message ol {
+            margin: 0.5em 0;
+            padding-left: 1.5em;
+        }
+        .ai-message li {
+            margin: 0.3em 0;
+        }
+        .ai-message pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 0.5em;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0.5em 0;
+        }
+        .ai-message code {
+            background: #f8f9fa;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .ai-message a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .ai-message a:hover {
+            text-decoration: underline;
+        }
+        .ai-message strong {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .ai-message em {
+            font-style: italic;
+        }
+        .input-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px 0;
+        }
+        #question-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #send-button {
+            padding: 8px 16px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background: #0056b3;
+        }
+        #attachment-button {
+            padding: 8px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+        }
+        #attachment-button:hover {
+            background: #5a6268;
+        }
+        #attachment-button svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        #file-input {
+            display: none;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <div class="header-left">
+                <h3>WebChat AI</h3>
+                <button id="attachment-button" title="Attach file">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message ai-message">
+                Hello! I'm your WebChat AI assistant. I can help you understand the content of this webpage. What would you like to know?
+            </div>
+        </div>
+        <div class="input-container">
+            <input type="text" id="question-input" placeholder="Ask a question about this page...">
+            <input type="file" id="file-input" multiple>
+            <button id="send-button">Send</button>
+        </div>
+        <div class="loading" id="loading">
+            Thinking...
+        </div>
+    </div>
+    <script src="sidepanel.js"></script>
+</body>
+</html> 
